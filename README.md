@@ -320,6 +320,8 @@ This prototype is for demonstration and decision support only. It does not repla
 ## Team
 
 Hackathon Team — Minelot Enterprise 2026
+Benjamin Ghinno - FIIS UNI - PERU
+Valeria Villacorta  - FIIS UNI - PERU
 
 **Roles:**
 Benjamin Ghinno IA + ML + DATA engineer
