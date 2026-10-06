@@ -1,105 +1,114 @@
 import Link from 'next/link'
+import { ArrowRight, AlertTriangle, Zap, TrendingDown } from 'lucide-react'
 
-const metrics = [
-  { label: 'Risk Score', value: '76/100', delta: '+6 vs baseline' },
-  { label: 'Productivity', value: '-8.4%', delta: 'Daily change' },
-  { label: 'Lean Waste', value: '14.2%', delta: 'Process inefficiency' },
-  { label: 'Availability', value: '88.4%', delta: 'Fleet uptime' },
-]
-
-const risks = [
-  { title: 'Equipment availability deterioration', severity: 'High', impact: 'Fleet throughput and dispatch rate are falling.' },
-  { title: 'Truck queue escalation', severity: 'High', impact: 'Productivity loss is compounded by congestion and long idle cycles.' },
-  { title: 'Route deviation inefficiency', severity: 'Medium', impact: 'Fuel burn and travel distance exceed target.' },
-]
-
-const recommendations = [
-  'Prioritize T-24 maintenance intervention before the next shift.',
-  'Reduce truck queue pressure at the loading zone and rebalance dispatch.',
-  'Review haul routes to minimize route deviation and recover energy efficiency.',
-]
-
-export default function HomePage() {
+export default function Home() {
   return (
-    <main className="min-h-screen bg-slate-950 text-slate-100">
-      <div className="mx-auto max-w-7xl p-6">
-        <header className="mb-8 flex items-center justify-between border-b border-slate-800 pb-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
+      {/* Navigation */}
+      <nav className="border-b border-slate-800 bg-slate-950/50 backdrop-blur-sm sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center">
+              <span className="text-white font-bold text-lg">⛏️</span>
+            </div>
+            <div>
+              <h1 className="text-xl font-bold text-white">MineCopilot Enterprise</h1>
+              <p className="text-xs text-slate-400">AI Decision Layer for Mining</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-4">
+            <Link href="/copilot" className="px-4 py-2 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white font-medium transition">
+              Launch Copilot
+            </Link>
+          </div>
+        </div>
+      </nav>
+
+      {/* Hero */}
+      <section className="max-w-7xl mx-auto px-6 py-20">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div>
-            <p className="text-xs uppercase tracking-[0.25em] text-cyan-300">MineCopilot AI</p>
-            <h1 className="mt-2 text-4xl font-bold">Conversational Mining Intelligence</h1>
-          </div>
-          <Link href="/chat" className="rounded-lg bg-cyan-500 px-5 py-3 font-medium text-slate-900 hover:bg-cyan-400">
-            Ask MineCopilot
-          </Link>
-        </header>
-
-        <section className="grid gap-4 md:grid-cols-4">
-          {metrics.map((metric) => (
-            <div key={metric.label} className="rounded-2xl border border-slate-800 bg-slate-900 p-5 shadow-glow">
-              <p className="text-sm text-slate-400">{metric.label}</p>
-              <p className="mt-3 text-3xl font-bold text-white">{metric.value}</p>
-              <p className="mt-2 text-xs text-cyan-300">{metric.delta}</p>
-            </div>
-          ))}
-        </section>
-
-        <section className="mt-8 grid gap-6 lg:grid-cols-[1.6fr_1fr]">
-          <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
-            <h2 className="mb-4 text-xl font-semibold">Operational briefing</h2>
-            <p className="mb-6 text-slate-300">
-              Productivity is down because waiting time increased, equipment availability decreased, and
-              route deviation remained elevated. The most urgent risk is the maintenance backlog on critical fleet assets.
+            <h2 className="text-5xl font-bold text-white mb-6 leading-tight">
+              Connect Fragmented Mining Data.<br />
+              <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">Make Smarter Decisions.</span>
+            </h2>
+            <p className="text-xl text-slate-300 mb-8 leading-relaxed">
+              MineCopilot bridges your ERP, maintenance, production, and safety systems to explain risks, identify waste, simulate scenarios, and recommend the highest-impact actions—all through conversational AI.
             </p>
-
-            <div className="space-y-4">
-              {risks.map((risk) => (
-                <div key={risk.title} className="rounded-xl border border-slate-700 bg-slate-950 p-4">
-                  <div className="flex items-center justify-between">
-                    <p className="font-semibold text-white">{risk.title}</p>
-                    <span className={risk.severity === 'High' ? 'text-red-400' : 'text-amber-400'}>{risk.severity}</span>
-                  </div>
-                  <p className="mt-2 text-sm text-slate-300">{risk.impact}</p>
-                </div>
-              ))}
+            <div className="flex gap-4">
+              <Link href="/copilot" className="px-6 py-3 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold transition shadow-lg hover:shadow-cyan-500/50">
+                Start Demo <ArrowRight className="inline ml-2 w-5 h-5" />
+              </Link>
+              <Link href="/dashboard" className="px-6 py-3 rounded-lg border border-slate-700 hover:border-slate-500 text-slate-300 hover:text-white font-semibold transition">
+                View Dashboard
+              </Link>
             </div>
           </div>
-
-          <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
-            <h2 className="mb-4 text-xl font-semibold">Recommended action</h2>
-            <div className="space-y-3">
-              {recommendations.map((item, idx) => (
-                <div key={idx} className="rounded-xl border border-slate-700 bg-slate-950 p-3 text-sm text-slate-200">
-                  {item}
-                </div>
-              ))}
+          <div className="grid grid-cols-2 gap-4">
+            <div className="p-6 rounded-xl border border-slate-800 bg-slate-900/50 backdrop-blur hover:border-cyan-500/50 transition">
+              <AlertTriangle className="w-8 h-8 text-red-500 mb-3" />
+              <h3 className="text-white font-semibold mb-2">Risk Detection</h3>
+              <p className="text-sm text-slate-400">Identify critical operational risks before they escalate</p>
+            </div>
+            <div className="p-6 rounded-xl border border-slate-800 bg-slate-900/50 backdrop-blur hover:border-cyan-500/50 transition">
+              <Zap className="w-8 h-8 text-amber-500 mb-3" />
+              <h3 className="text-white font-semibold mb-2">Lean Waste</h3>
+              <p className="text-sm text-slate-400">Detect and quantify operational inefficiencies</p>
+            </div>
+            <div className="p-6 rounded-xl border border-slate-800 bg-slate-900/50 backdrop-blur hover:border-cyan-500/50 transition">
+              <TrendingDown className="w-8 h-8 text-green-500 mb-3" />
+              <h3 className="text-white font-semibold mb-2">What-If Simulation</h3>
+              <p className="text-sm text-slate-400">Model scenarios and predict operational outcomes</p>
+            </div>
+            <div className="p-6 rounded-xl border border-slate-800 bg-slate-900/50 backdrop-blur hover:border-cyan-500/50 transition">
+              <Zap className="w-8 h-8 text-purple-500 mb-3" />
+              <h3 className="text-white font-semibold mb-2">Actionable Insights</h3>
+              <p className="text-sm text-slate-400">Evidence-backed recommendations with estimated ROI</p>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section className="mt-8 rounded-2xl border border-slate-800 bg-slate-900 p-6">
-          <div className="flex items-center justify-between">
-            <h2 className="text-xl font-semibold">Ask MineCopilot</h2>
-            <span className="rounded-full border border-cyan-500/50 bg-cyan-500/10 px-3 py-1 text-xs uppercase tracking-wider text-cyan-300">
-              Evidence-based
-            </span>
+      {/* Value Prop */}
+      <section className="bg-slate-900/50 border-y border-slate-800 py-16">
+        <div className="max-w-7xl mx-auto px-6">
+          <h3 className="text-3xl font-bold text-white mb-12 text-center">How It Works</h3>
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
+            {[
+              { step: '1', title: 'ASK', desc: 'Natural language question' },
+              { step: '2', title: 'RETRIEVE', desc: 'Fetch data & documents' },
+              { step: '3', title: 'REASON', desc: 'Analytical engines analyze' },
+              { step: '4', title: 'SIMULATE', desc: 'Model scenarios' },
+              { step: '5', title: 'RECOMMEND', desc: 'Prioritized actions' },
+            ].map((item) => (
+              <div key={item.step} className="text-center">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center mx-auto mb-4">
+                  <span className="text-white font-bold text-lg">{item.step}</span>
+                </div>
+                <h4 className="text-white font-semibold mb-2">{item.title}</h4>
+                <p className="text-sm text-slate-400">{item.desc}</p>
+              </div>
+            ))}
           </div>
+        </div>
+      </section>
 
-          <div className="mt-6 grid gap-3 md:grid-cols-2">
-            <button className="rounded-xl border border-slate-700 bg-slate-950 p-4 text-left text-slate-200 hover:border-cyan-400">
-              Why did productivity decrease today?
-            </button>
-            <button className="rounded-xl border border-slate-700 bg-slate-950 p-4 text-left text-slate-200 hover:border-cyan-400">
-              What is the most critical risk?
-            </button>
-            <button className="rounded-xl border border-slate-700 bg-slate-950 p-4 text-left text-slate-200 hover:border-cyan-400">
-              What should we do next?
-            </button>
-            <button className="rounded-xl border border-slate-700 bg-slate-950 p-4 text-left text-slate-200 hover:border-cyan-400">
-              What happens if we do nothing?
-            </button>
-          </div>
-        </section>
-      </div>
-    </main>
+      {/* CTA */}
+      <section className="max-w-7xl mx-auto px-6 py-20 text-center">
+        <h2 className="text-3xl font-bold text-white mb-6">Ready to Transform Mining Operations?</h2>
+        <p className="text-xl text-slate-300 mb-8">Experience how AI decision layers can improve your operational intelligence in less than 3 minutes.</p>
+        <Link href="/copilot" className="inline-block px-8 py-4 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold text-lg transition shadow-lg hover:shadow-cyan-500/50">
+          Launch Interactive Demo <ArrowRight className="inline ml-2 w-6 h-6" />
+        </Link>
+      </section>
+
+      {/* Footer */}
+      <footer className="border-t border-slate-800 bg-slate-950 py-8">
+        <div className="max-w-7xl mx-auto px-6 text-center text-slate-400 text-sm">
+          <p>MineCopilot Enterprise MVP • Factored Hackathon 2026</p>
+          <p className="mt-2">This prototype is for demonstration and decision support only. It does not replace qualified mining, safety, or engineering judgment.</p>
+        </div>
+      </footer>
+    </div>
   )
 }

@@ -1,14 +1,16 @@
 import type { Metadata } from 'next'
+import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'MineCopilot AI',
-  description: 'Conversational mining intelligence dashboard',
+  title: 'MineCopilot Enterprise | AI Decision Layer for Mining',
+  description: 'Connect fragmented mining data and make smarter operational decisions with AI-powered insights.',
+  viewport: 'width=device-width, initial-scale=1',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className="bg-slate-950 text-slate-100 antialiased">{children}</body>
+      <body>{children}</body>
     </html>
   )
 }

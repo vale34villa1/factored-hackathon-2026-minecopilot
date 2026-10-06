@@ -7,11 +7,9 @@
 }
 
 body {
-  background: #020817;
-  color: #e2e8f0;
+  @apply bg-slate-950 text-slate-100;
 }
 
-button,
-input {
-  transition: all 0.2s ease;
+* {
+  @apply scroll-smooth;
 }
