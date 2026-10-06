@@ -1,17 +1,11 @@
-const path = require('path')
-
-/** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    typedRoutes: false,
+  output: 'export',
+  trailingSlash: true,
+  images: {
+    unoptimized: true,
   },
-  webpack: (config) => {
-    config.resolve.alias = {
-      ...config.resolve.alias,
-      '@': path.resolve(__dirname),
-    }
-    return config
-  },
-}
+  basePath: '/factored-hackathon-2026-minelot',
+  assetPrefix: '/factored-hackathon-2026-minelot/',
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
