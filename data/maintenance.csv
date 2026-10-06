@@ -1,0 +1,6 @@
+equipment,priority,downtime_hours,planned_action
+T-24,high,11.5,hydraulic inspection
+F2,high,8.3,brake and loader calibration
+D-7,medium,4.1,preventive service
+L-11,medium,6.7,filter and cooling check
+R-5,low,2.9,minor electrical review
