@@ -1,114 +1,678 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minelot Enterprise | AI Decision Layer for Mining</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; line-height: 1.6; color: #1a1a1a; background: #fff; }
-        nav { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); padding: 1.5rem 2rem; position: sticky; top: 0; z-index: 1000; }
-        nav .container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
-        .logo { display: flex; align-items: center; gap: 10px; font-size: 1.5rem; font-weight: bold; color: white; }
-        .nav-links { display: flex; gap: 2rem; list-style: none; }
-        .nav-links a { color: white; text-decoration: none; }
-        .cta-btn { background: linear-gradient(135deg, #06b6d4 0%, #0284c7 100%); color: white; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none; font-weight: 600; }
-        .hero { background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%); color: white; padding: 6rem 2rem; text-align: center; }
-        .hero .container { max-width: 1000px; margin: 0 auto; }
-        .hero h1 { font-size: 3.5rem; margin-bottom: 1.5rem; }
-        .gradient-text { background: linear-gradient(135deg, #06b6d4 0%, #0284c7 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .hero p { font-size: 1.3rem; margin-bottom: 2rem; color: #cbd5e1; }
-        .btn-primary, .btn-secondary, .btn-cta { display: inline-block; padding: 1rem 2.5rem; border-radius: 8px; text-decoration: none; font-weight: 600; }
-        .btn-primary { background: linear-gradient(135deg, #06b6d4 0%, #0284c7 100%); color: white; }
-        .btn-secondary { background: transparent; color: white; border: 2px solid #06b6d4; }
-        .features, .how-it-works, .benefits { padding: 6rem 2rem; }
-        .features .container, .how-it-works .container, .benefits .container { max-width: 1200px; margin: 0 auto; }
-        .features h2, .how-it-works h2, .benefits h2 { font-size: 2.5rem; text-align: center; margin-bottom: 4rem; }
-        .features-grid, .workflow, .benefits-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }
-        .feature-card, .benefit-item { background: white; padding: 2rem; border-radius: 12px; border: 1px solid #e2e8f0; }
-        .cta { background: linear-gradient(135deg, #06b6d4 0%, #0284c7 100%); color: white; padding: 4rem 2rem; text-align: center; }
-        footer { background: #0f172a; color: #cbd5e1; padding: 3rem 2rem; text-align: center; }
-        @media (max-width: 768px) { .nav-links { display: none; } .hero h1 { font-size: 2rem; } }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MineCopilot Enterprise | AI Decision Layer for Mining</title>
+  <style>
+    :root {
+      --bg: #07111f;
+      --bg-soft: #0f172a;
+      --card: rgba(15, 23, 42, 0.8);
+      --primary: #22d3ee;
+      --primary-2: #3b82f6;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --success: #34d399;
+      --warning: #fbbf24;
+      --danger: #f87171;
+      --white: #ffffff;
+      --border: rgba(148, 163, 184, 0.2);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(34, 211, 238, 0.18), transparent 35%),
+        radial-gradient(circle at top right, rgba(59, 130, 246, 0.15), transparent 30%),
+        linear-gradient(135deg, #020817 0%, #0f172a 35%, #111827 100%);
+      color: var(--text);
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      backdrop-filter: blur(12px);
+      background: rgba(2, 8, 23, 0.7);
+      border-bottom: 1px solid var(--border);
+      z-index: 10;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 76px;
+      gap: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      box-shadow: 0 10px 24px rgba(59, 130, 246, 0.45);
+      font-size: 22px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      color: var(--muted);
+      font-size: 0.96rem;
+    }
+
+    .nav-links a:hover { color: var(--white); }
+
+    .nav-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 18px;
+      border-radius: 12px;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      color: #03111d;
+      box-shadow: 0 10px 30px rgba(34, 211, 238, 0.3);
+    }
+
+    .hero {
+      padding: 72px 0 48px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 36px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(34, 211, 238, 0.08);
+      border: 1px solid rgba(34, 211, 238, 0.2);
+      color: var(--primary);
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      font-size: clamp(2.6rem, 6vw, 5rem);
+      line-height: 1.05;
+      margin: 0 0 18px;
+      letter-spacing: -0.05em;
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, var(--primary), #7dd3fc);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero-copy {
+      color: var(--muted);
+      font-size: 1.1rem;
+      line-height: 1.8;
+      margin: 0 0 30px;
+      max-width: 680px;
+    }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 34px;
+    }
+
+    .primary-btn, .secondary-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 52px;
+      padding: 0 24px;
+      border-radius: 14px;
+      font-weight: 800;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .primary-btn {
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      color: #03111d;
+      box-shadow: 0 16px 32px rgba(34, 211, 238, 0.26);
+    }
+
+    .secondary-btn {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .primary-btn:hover, .secondary-btn:hover, .nav-cta:hover {
+      transform: translateY(-2px);
+    }
+
+    .stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+    }
+
+    .stat {
+      min-width: 140px;
+      padding: 16px 18px;
+      border: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.55);
+      border-radius: 14px;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 1.45rem;
+      margin-bottom: 6px;
+      color: var(--white);
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .hero-panel {
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.95));
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 22px;
+      box-shadow: 0 24px 60px rgba(2, 6, 23, 0.55);
+    }
+
+    .panel-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .dot-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: block;
+    }
+
+    .dot.red { background: var(--danger); }
+    .dot.yellow { background: var(--warning); }
+    .dot.green { background: var(--success); }
+
+    .panel-screen {
+      background: linear-gradient(180deg, rgba(15, 118, 110, 0.1), rgba(15, 23, 42, 0.3));
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px;
+    }
+
+    .kpi {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .kpi:last-child { border-bottom: none; }
+
+    .kpi-label {
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .kpi-value {
+      font-weight: 800;
+      font-size: 1.05rem;
+      color: var(--white);
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(52, 211, 153, 0.5);
+      color: var(--success);
+      background: rgba(52, 211, 153, 0.08);
+      font-weight: 700;
+      font-size: 0.8rem;
+    }
+
+    section {
+      padding: 64px 0;
+    }
+
+    .section-title {
+      margin: 0 0 28px;
+      text-align: center;
+      font-size: clamp(2rem, 4vw, 3rem);
+      letter-spacing: -0.04em;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 22px;
+      margin-top: 32px;
+    }
+
+    .feature {
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 22px;
+      min-height: 200px;
+    }
+
+    .feature-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, rgba(34, 211, 238, 0.18), rgba(59, 130, 246, 0.18));
+      font-size: 26px;
+      margin-bottom: 16px;
+    }
+
+    .feature h3 {
+      margin: 0 0 10px;
+      font-size: 1.25rem;
+    }
+
+    .feature p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .workflow {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 28px;
+    }
+
+    .step {
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 22px 18px;
+      text-align: center;
+    }
+
+    .step-number {
+      width: 46px;
+      height: 46px;
+      margin: 0 auto 16px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      color: #03111d;
+      font-weight: 900;
+    }
+
+    .step h4 {
+      margin: 0 0 8px;
+      font-size: 1rem;
+      letter-spacing: 0.04em;
+    }
+
+    .step p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    .benefits {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 22px;
+      margin-top: 28px;
+    }
+
+    .benefit {
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 22px;
+    }
+
+    .benefit h3 {
+      margin: 0 0 12px;
+      font-size: 1.22rem;
+    }
+
+    .benefit p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .cta {
+      padding: 72px 0 100px;
+    }
+
+    .cta-box {
+      text-align: center;
+      border: 1px solid rgba(34, 211, 238, 0.2);
+      background: linear-gradient(135deg, rgba(34, 211, 238, 0.12), rgba(59, 130, 246, 0.18));
+      border-radius: 24px;
+      padding: 42px 24px;
+    }
+
+    .cta-box h2 {
+      margin: 0 0 18px;
+      font-size: clamp(2rem, 4vw, 3rem);
+      letter-spacing: -0.05em;
+    }
+
+    .cta-box p {
+      margin: 0 auto 22px;
+      max-width: 720px;
+      color: var(--muted);
+      line-height: 1.8;
+      font-size: 1.05rem;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 0 44px;
+      color: var(--muted);
+    }
+
+    .footer-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid, .features-grid, .workflow, .benefits {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .nav-links { display: none; }
+      .hero-grid, .features-grid, .workflow, .benefits { grid-template-columns: 1fr; }
+      .cta-row { flex-direction: column; }
+      .primary-btn, .secondary-btn, .nav-cta { width: 100%; }
+    }
+  </style>
 </head>
 <body>
-    <nav>
-        <div class="container">
-            <div class="logo"><span>⛏️</span> MineCopilot Enterprise</div>
-            <ul class="nav-links">
-                <li><a href="#features">Features</a></li>
-                <li><a href="#how-it-works">How It Works</a></li>
-                <li><a href="#benefits">Benefits</a></li>
-            </ul>
-            <a href="/" class="cta-btn">Launch Beta App</a>
-        </div>
-    </nav>
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <div class="brand-mark">⛏️</div>
+        <span>MineCopilot</span>
+      </div>
 
+      <nav class="nav-links">
+        <a href="#features">Funciones</a>
+        <a href="#workflow">Cómo funciona</a>
+        <a href="#benefits">Beneficios</a>
+      </nav>
+
+      <a class="nav-cta" href="#cta">Launch Beta</a>
+    </div>
+  </header>
+
+  <main>
     <section class="hero">
-        <div class="container">
-            <h1>Connect Fragmented Mining Data<br><span class="gradient-text">Make Smarter Decisions</span></h1>
-            <p>MineCopilot bridges your ERP, maintenance, production, and safety systems to explain risks, identify waste, simulate scenarios, and recommend the highest-impact actions—all through conversational AI.</p>
-            <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
-                <a href="/" class="btn-primary">🚀 Start Demo</a>
-                <a href="#features" class="btn-secondary">Learn More</a>
+      <div class="container hero-grid">
+        <div>
+          <div class="eyebrow">AI DECISION LAYER FOR MINING</div>
+          <h1>
+            Conecta datos mineros fragmentados y
+            <span class="gradient-text">decide mejor</span>
+          </h1>
+          <p class="hero-copy">
+            MineCopilot une ERP, mantenimiento, producción, seguridad e IoT para explicar riesgos,
+            detectar desperdicios Lean, simular escenarios y recomendar acciones con impacto real en la operación.
+          </p>
+
+          <div class="cta-row">
+            <a class="primary-btn" href="#cta">🚀 Abrir beta</a>
+            <a class="secondary-btn" href="#features">Ver más</a>
+          </div>
+
+          <div class="stats">
+            <div class="stat">
+              <strong>+30%</strong>
+              <span>mejora de visibilidad</span>
             </div>
-        </div>
-    </section>
-
-    <section class="features" id="features">
-        <div class="container">
-            <h2>Powerful Features</h2>
-            <div class="features-grid">
-                <div class="feature-card"><h3>🚨 Risk Detection</h3><p>Identify critical operational risks before they escalate.</p></div>
-                <div class="feature-card"><h3>⚡ Lean Waste Analysis</h3><p>Detect and quantify inefficiencies across operations.</p></div>
-                <div class="feature-card"><h3>📊 What-If Simulation</h3><p>Model scenarios and predict outcomes with analytics.</p></div>
-                <div class="feature-card"><h3>💡 Actionable Insights</h3><p>Get recommendations with estimated ROI.</p></div>
-                <div class="feature-card"><h3>🗣️ Conversational AI</h3><p>Ask questions in natural language and get grounded answers.</p></div>
-                <div class="feature-card"><h3>🔗 Data Integration</h3><p>Connect ERP, maintenance, production, safety, IoT, and SCADA.</p></div>
+            <div class="stat">
+              <strong>9</strong>
+              <span>tipos de waste</span>
             </div>
-        </div>
-    </section>
-
-    <section class="how-it-works" id="how-it-works">
-        <div class="container">
-            <h2>How It Works</h2>
-            <div class="workflow">
-                <div class="feature-card"><h3>1. ASK</h3><p>Natural language query</p></div>
-                <div class="feature-card"><h3>2. RETRIEVE</h3><p>Fetch data and docs</p></div>
-                <div class="feature-card"><h3>3. REASON</h3><p>Run analytical engines</p></div>
-                <div class="feature-card"><h3>4. SIMULATE</h3><p>Model scenarios</p></div>
-                <div class="feature-card"><h3>5. RECOMMEND</h3><p>Prioritized actions</p></div>
+            <div class="stat">
+              <strong>24/7</strong>
+              <span>soporte operativo</span>
             </div>
+          </div>
         </div>
-    </section>
 
-    <section class="benefits" id="benefits">
-        <div class="container">
-            <h2>Why Choose MineCopilot?</h2>
-            <div class="benefits-grid">
-                <div class="benefit-item"><h3>⏱️ Fast Decisions</h3><p>Get insights in minutes instead of days.</p></div>
-                <div class="benefit-item"><h3>📈 Evidence-Based</h3><p>Every answer is grounded in real data.</p></div>
-                <div class="benefit-item"><h3>💰 ROI Focused</h3><p>Recommendations with business impact.</p></div>
-                <div class="benefit-item"><h3>🔒 Enterprise Ready</h3><p>Built for large-scale mining operations.</p></div>
-                <div class="benefit-item"><h3>🎯 Specialized Agents</h3><p>Risk, Lean, production, and maintenance intelligence.</p></div>
-                <div class="benefit-item"><h3>📊 Better Visibility</h3><p>Dashboards with KPIs and operational insights.</p></div>
+        <div class="hero-panel">
+          <div class="panel-top">
+            <span>MineCopilot Dashboard</span>
+            <div class="dot-row">
+              <span class="dot red"></span>
+              <span class="dot yellow"></span>
+              <span class="dot green"></span>
             </div>
+          </div>
+
+          <div class="panel-screen">
+            <div class="kpi">
+              <span class="kpi-label">Risk score</span>
+              <span class="kpi-value">82/100</span>
+            </div>
+            <div class="kpi">
+              <span class="kpi-label">Productivity delta</span>
+              <span class="kpi-value">-8.4%</span>
+            </div>
+            <div class="kpi">
+              <span class="kpi-label">Lean waste</span>
+              <span class="kpi-value">31.7</span>
+            </div>
+            <div class="kpi">
+              <span class="kpi-label">Recommended action</span>
+              <span class="pill">Prioritize T-24</span>
+            </div>
+          </div>
         </div>
+      </div>
     </section>
 
-    <section class="cta">
-        <div class="container">
-            <h2>Ready to Transform Mining Operations?</h2>
-            <p>Experience how AI decision layers can improve your operational intelligence in less than 3 minutes.</p>
-            <a href="/" class="btn-cta">🚀 Launch Interactive Demo</a>
+    <section id="features">
+      <div class="container">
+        <h2 class="section-title">Qué hace MineCopilot</h2>
+
+        <div class="features-grid">
+          <article class="feature">
+            <div class="feature-icon">🚨</div>
+            <h3>Detección de riesgo</h3>
+            <p>Identifica eventos, cuellos de botella y riesgos críticos antes de que escalen en costo o seguridad.</p>
+          </article>
+
+          <article class="feature">
+            <div class="feature-icon">⚙️</div>
+            <h3>Lean waste analysis</h3>
+            <p>Detecta tiempos muertos, rutas ineficientes, retrasos, sobreprocesamiento e ineficiencias operativas.</p>
+          </article>
+
+          <article class="feature">
+            <div class="feature-icon">🧠</div>
+            <h3>IA conversacional</h3>
+            <p>Pregunta en lenguaje natural y recibe explicaciones con evidencia, análisis y recomendación priorizada.</p>
+          </article>
+
+          <article class="feature">
+            <div class="feature-icon">📊</div>
+            <h3>Simulación de escenarios</h3>
+            <p>Modela cambios operativos y predice impactos en productividad, costos, riesgo y disponibilidad.</p>
+          </article>
+
+          <article class="feature">
+            <div class="feature-icon">🧩</div>
+            <h3>Integración de datos</h3>
+            <p>Conecta ERP, producción, mantenimiento, seguridad, operación y fuentes IoT en una sola capa inteligente.</p>
+          </article>
+
+          <article class="feature">
+            <div class="feature-icon">💡</div>
+            <h3>Acciones accionables</h3>
+            <p>Entrega recomendaciones con prioridad por impacto, costo y tiempo de ejecución.</p>
+          </article>
         </div>
+      </div>
     </section>
 
-    <footer>
-        <div class="container">
-            <p><strong>MineCopilot Enterprise MVP</strong> • Factored Hackathon 2026</p>
-            <p>Conversational Mining Intelligence powered by LLMs</p>
+    <section id="workflow">
+      <div class="container">
+        <h2 class="section-title">Cómo funciona</h2>
+
+        <div class="workflow">
+          <div class="step">
+            <div class="step-number">1</div>
+            <h4>PREGUNTA</h4>
+            <p>El usuario consulta en lenguaje natural.</p>
+          </div>
+
+          <div class="step">
+            <div class="step-number">2</div>
+            <h4>RECUPERA</h4>
+            <p>Trae datos y evidencia de múltiples sistemas.</p>
+          </div>
+
+          <div class="step">
+            <div class="step-number">3</div>
+            <h4>RAZONA</h4>
+            <p>Los motores analíticos procesan riesgo, producción y Lean.</p>
+          </div>
+
+          <div class="step">
+            <div class="step-number">4</div>
+            <h4>SIMULA</h4>
+            <p>Prueba escenarios y predice impactos operativos.</p>
+          </div>
+
+          <div class="step">
+            <div class="step-number">5</div>
+            <h4>RECOMIENDA</h4>
+            <p>Prioriza acciones con valor para la operación.</p>
+          </div>
         </div>
-    </footer>
+      </div>
+    </section>
+
+    <section id="benefits">
+      <div class="container">
+        <h2 class="section-title">Ventajas para la operación</h2>
+
+        <div class="benefits">
+          <div class="benefit">
+            <h3>⏱️ Decisiones más rápidas</h3>
+            <p>Reduce el tiempo para responder por qué bajó producción o por qué aumentó riesgo.</p>
+          </div>
+
+          <div class="benefit">
+            <h3>📈 Inteligencia basada en evidencia</h3>
+            <p>Todo se fundamenta en métricas reales, no en suposiciones ni reportes aislados.</p>
+          </div>
+
+          <div class="benefit">
+            <h3>💰 ROI visible</h3>
+            <p>Entiende cuánto puede ganar o ahorrar la operación si implementa cada recomendación.</p>
+          </div>
+
+          <div class="benefit">
+            <h3>🛡️ Control operativo</h3>
+            <p>Mejora la capacidad de supervisión y anticipación en minas con múltiples sitios o unidades.</p>
+          </div>
+
+          <div class="benefit">
+            <h3>🔗 Sistema integrado</h3>
+            <p>Unifica información dispersa en una verdad operacional única para la toma de decisiones.</p>
+          </div>
+
+          <div class="benefit">
+            <h3>🚀 Preparado para beta</h3>
+            <p>Diseñado para demostración, pruebas internas y validación con usuarios de operación.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta" id="cta">
+      <div class="container">
+        <div class="cta-box">
+          <h2>¿Listo para probar la beta?</h2>
+          <p>
+            Este proyecto está pensado para demostrar cómo una capa de IA puede transformar decisiones
+            mineras, mejorar seguridad y elevar productividad con respaldo analítico.
+          </p>
+          <a class="primary-btn" href="https://vale34villa1.github.io/factored-hackathon-2026-minelot/" target="_blank">
+            🚀 Abrir sitio público
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-row">
+      <span>MineCopilot Enterprise • Factored Hackathon 2026</span>
+      <span>Conversational Mining Intelligence powered by LLMs</span>
+    </div>
+  </footer>
 </body>
 </html>
