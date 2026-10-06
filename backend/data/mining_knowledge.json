@@ -1,0 +1,14 @@
+[
+  {
+    "title": "Truck dispatch",
+    "content": "Waiting time and queue buildup reduce productivity and increase idling time across the haul cycle."
+  },
+  {
+    "title": "Maintenance priority",
+    "content": "Equipment with downtime above eight hours or degraded availability should be prioritized before the next shift."
+  },
+  {
+    "title": "Fuel efficiency",
+    "content": "Non-optimal haul routes and dispatch inefficiency increase fuel consumption and operational waste."
+  }
+]

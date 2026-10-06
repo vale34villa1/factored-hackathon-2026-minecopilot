@@ -1,87 +1,25 @@
 version: '3.8'
 
 services:
-  postgres:
-    image: postgres:15-alpine
-    container_name: minecopilot-db
-    environment:
-      POSTGRES_USER: minecopilot
-      POSTGRES_PASSWORD: minecopilot_dev
-      POSTGRES_DB: minecopilot
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U minecopilot"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
-  redis:
-    image: redis:7-alpine
-    container_name: minecopilot-redis
-    ports:
-      - "6379:6379"
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
   backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
-    container_name: minecopilot-backend
-    depends_on:
-      postgres:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-    environment:
-      DATABASE_URL: postgresql://minecopilot:minecopilot_dev@postgres:5432/minecopilot
-      REDIS_URL: redis://redis:6379
-      OPENAI_API_KEY: ${OPENAI_API_KEY}
-      OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4o-mini}
-      LOG_LEVEL: ${LOG_LEVEL:-INFO}
-      ENVIRONMENT: ${ENVIRONMENT:-development}
+    build: ./backend
     ports:
       - "8000:8000"
+    environment:
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4o-mini}
+      CORS_ORIGINS: ${CORS_ORIGINS:-[\"http://localhost:3000\"]}
     volumes:
       - ./backend:/app
-    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 
   frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    container_name: minecopilot-frontend
-    depends_on:
-      - backend
-    environment:
-      NEXT_PUBLIC_API_URL: http://backend:8000
-      NEXT_PUBLIC_WS_URL: ws://backend:8000
+    build: ./frontend
     ports:
       - "3000:3000"
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:8000
     volumes:
       - ./frontend:/app
       - /app/node_modules
     command: npm run dev
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
-volumes:
-  postgres_data:
-
-networks:
-  default:
-    name: minecopilot-network
