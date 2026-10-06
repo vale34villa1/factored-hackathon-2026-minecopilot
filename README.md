@@ -49,7 +49,7 @@ cd backend
 python -m venv .venv
 source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 pip install -r requirements.txt
-uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+uvicorn app.main:app --reload --host x.x.x.x --port ##
 ```
 
 **Frontend:**
@@ -60,8 +60,8 @@ npm run dev
 ```
 
 Then open:
-- Frontend: http://localhost:3000
-- API Docs: http://localhost:8000/docs
+- Frontend: http://localhost:...
+- API Docs: http://localhost:.../docs
 
 ### Option 2: Docker
 
