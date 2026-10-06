@@ -2,19 +2,9 @@
 
 A full-stack mining intelligence platform with a React/Next.js frontend and Python/FastAPI backend.
 
-## Overview
+## Quick start
 
-MineCopilot AI brings together operational data, risk analysis, Lean waste detection, and conversational reasoning to help mining teams understand what is happening, why it is happening, and what to do next.
-
-## Stack
-
-- Frontend: Next.js + TypeScript + Tailwind CSS
-- Backend: Python + FastAPI
-- Data: Pandas + CSV and knowledge base JSON
-- AI: optional OpenAI integration with grounded prompts
-- Deployment: Docker + docker-compose
-
-## Run locally
+### Docker
 
 ```bash
 cp .env.example .env
@@ -22,20 +12,22 @@ cp .env.example .env
 docker-compose up --build
 ```
 
-Then open:
+Open:
 - Frontend: http://localhost:3000
-- Backend API: http://localhost:8000
-- API docs: http://localhost:8000/docs
+- Backend: http://localhost:8000
+- Docs: http://localhost:8000/docs
 
-## Backend quick start
+### Local backend
 
 ```bash
 cd backend
+python -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
-uvicorn app.main:app --reload
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-## Frontend quick start
+### Local frontend
 
 ```bash
 cd frontend
@@ -50,12 +42,6 @@ npm run dev
 - What should we do next?
 - What happens if we do nothing?
 
-## Security
+## Notes
 
-- Chat input is sanitized
-- Secrets are configured through environment variables
-- The app is designed for demonstration and decision support
-
-## Disclaimer
-
-This prototype is for decision support only and does not replace qualified mining, safety, or engineering judgment.
+This project is an MVP designed for demo and operational decision support. It does not replace qualified mining, safety, or engineering judgment.
