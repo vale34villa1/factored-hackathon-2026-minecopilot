@@ -1,121 +1,389 @@
-from __future__ import annotations
+# MineCopilot AI — Full-Stack Production Demo
 
-from pathlib import Path
+A complete production-ready mining operations intelligence platform with:
+- **Frontend**: React/Next.js with TypeScript, Tailwind CSS, real-time dashboards
+- **Backend**: Python/FastAPI with async handlers, RAG, LLM agents
+- **Data Layer**: Pandas + SQLite + Vector database integration
+- **LLM Reasoning**: OpenAI GPT-4 + specialized mining agents
+- **DevOps**: Docker Compose, automated tests, CI/CD ready
 
-import pandas as pd
+## Quick Start
 
+### Local development (Docker Compose)
 
-class MiningDataEngine:
-    def __init__(self, data_dir: str | Path):
-        self.data_dir = Path(data_dir)
+```bash
+# Clone and setup
+git clone https://github.com/vale34villa1/factored-hackathon-2026-minecopilot.git
+cd factored-hackathon-2026-minecopilot
 
-    def load(self):
-        raw = {}
-        for file_name in [
-            "production.csv",
-            "equipment.csv",
-            "maintenance.csv",
-            "safety_incidents.csv",
-            "operations.csv",
-        ]:
-            path = self.data_dir / file_name
-            if path.exists():
-                frame = pd.read_csv(path)
-                raw[file_name.replace(".csv", "")] = frame
-        return raw
+# Copy environment file
+cp .env.example .env
+# Edit .env with your OpenAI API key
 
-    def _safe_numeric_series(self, frame: pd.DataFrame, column: str, default: float) -> float:
-        if frame.empty or column not in frame.columns:
-            return float(default)
-        series = pd.to_numeric(frame[column], errors="coerce")
-        if series.empty or series.isna().all():
-            return float(default)
-        return float(series.mean())
+# Start services
+docker-compose up -d
 
-    def compute_summary(self):
-        data = self.load()
+# Frontend: http://localhost:3000
+# Backend API: http://localhost:8000
+# API Docs: http://localhost:8000/docs
+```
 
-        production = data.get("production", pd.DataFrame())
-        equipment = data.get("equipment", pd.DataFrame())
-        maintenance = data.get("maintenance", pd.DataFrame())
-        incidents = data.get("safety_incidents", pd.DataFrame())
-        operations = data.get("operations", pd.DataFrame())
+### Without Docker
 
-        if production.empty:
-            production = pd.DataFrame([
-                {"shift": "A", "target_tons": 17000, "actual_tons": 15550},
-                {"shift": "B", "target_tons": 17600, "actual_tons": 16040},
-                {"shift": "C", "target_tons": 16800, "actual_tons": 15280},
-            ])
+**Backend:**
+```bash
+cd backend
+pip install -r requirements.txt
+python -m uvicorn main:app --reload
+```
 
-        if equipment.empty:
-            equipment = pd.DataFrame([
-                {"equipment": "T-24", "availability_pct": 88.4, "fuel_efficiency": 81.2, "status": "degraded"},
-                {"equipment": "F2", "availability_pct": 91.0, "fuel_efficiency": 84.5, "status": "watch"},
-                {"equipment": "D-7", "availability_pct": 93.5, "fuel_efficiency": 89.0, "status": "normal"},
-            ])
+**Frontend:**
+```bash
+cd frontend
+npm install
+npm run dev
+```
 
-        if maintenance.empty:
-            maintenance = pd.DataFrame([
-                {"equipment": "T-24", "priority": "high", "downtime_hours": 11.5, "planned_action": "hydraulic inspection"},
-                {"equipment": "F2", "priority": "high", "downtime_hours": 8.3, "planned_action": "brake and loader calibration"},
-                {"equipment": "D-7", "priority": "medium", "downtime_hours": 4.1, "planned_action": "preventive service"},
-            ])
+## Architecture
 
-        if incidents.empty:
-            incidents = pd.DataFrame([
-                {"severity": "medium", "count": 2},
-                {"severity": "high", "count": 1},
-                {"severity": "low", "count": 4},
-            ])
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    MineCopilot AI                           │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  ┌──────────────────┐          ┌──────────────────┐       │
+│  │   React/Next.js  │          │   Python FastAPI │       │
+│  │   TypeScript     │◄────────►│   Async Workers  │       │
+│  │   Tailwind CSS   │          │                  │       │
+│  └──────────────────┘          └──────────────────┘       │
+│         ▲                              │                   │
+│         │                              ▼                   │
+│         │                    ┌──────────────────┐          │
+│         │                    │  RAG Engine      │          │
+│         │                    │  Vector DB       │          │
+│         │                    │  Document Store  │          │
+│         │                    └──────────────────┘          │
+│         │                              │                   │
+│         │                              ▼                   │
+│         │                    ┌──────────────────┐          │
+│         │                    │  LLM Agents      │          │
+│         │                    │  Risk Engine     │          │
+│         │                    │  Lean Engine     │          │
+│         │                    │  OpenAI GPT-4    │          │
+│         │                    └──────────────────┘          │
+│         │                              │                   │
+│         │                              ▼                   │
+│         └──────────────────────────────────────────┐       │
+│                                                    ▼       │
+│                                    ┌──────────────────┐   │
+│                                    │  Data Layer      │   │
+│                                    │  SQLite DB       │   │
+│                                    │  CSV Data        │   │
+│                                    │  Pandas Engine   │   │
+│                                    └──────────────────┘   │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
 
-        if operations.empty:
-            operations = pd.DataFrame([
-                {"metric": "waiting_time", "value": 31.2},
-                {"metric": "route_deviation", "value": 12.3},
-                {"metric": "fuel_consumption", "value": 7.1},
-            ])
+## Project Structure
 
-        target = float(pd.to_numeric(production["target_tons"], errors="coerce").sum())
-        actual = float(pd.to_numeric(production["actual_tons"], errors="coerce").sum())
-        productivity_delta = float(round(((actual / target) - 1) * 100, 1)) if target else 0.0
+```
+factored-hackathon-2026-minecopilot/
+├── docker-compose.yml                  # Multi-container orchestration
+├── .env.example                        # Environment template
+├── README.md                           # This file
+│
+├── frontend/                           # React/Next.js application
+│   ├── package.json
+│   ├── next.config.js
+│   ├── tsconfig.json
+│   ├── tailwind.config.js
+│   ├── public/
+│   └── src/
+│       ├── pages/
+│       │   ├── index.tsx              # Dashboard home
+│       │   ├── api/                   # API route handlers
+│       │   ├── risk.tsx               # Risk analysis view
+│       │   ├── production.tsx         # Production metrics
+│       │   └── maintenance.tsx        # Maintenance tracking
+│       ├── components/
+│       │   ├── dashboard/             # Dashboard widgets
+│       │   ├── charts/                # Chart components
+│       │   ├── chat/                  # Chat interface
+│       │   ├── layout/                # Layout + navigation
+│       │   └── common/                # Reusable UI bits
+│       ├── hooks/
+│       │   ├── useApi.ts              # API fetching hook
+│       │   ├── useWebSocket.ts        # Real-time updates
+│       │   └── useOperationalData.ts  # Data fetching
+│       ├── lib/
+│       │   ├── api.ts                 # API client
+│       │   ├── types.ts               # Shared TypeScript types
+│       │   └── utils.ts               # Utilities
+│       ├── styles/
+│       │   └── globals.css            # Global styles
+│       └── context/
+│           └── DashboardContext.tsx   # React context
+│
+├── backend/                            # Python FastAPI application
+│   ├── requirements.txt
+│   ├── Dockerfile
+│   ├── main.py                        # FastAPI app entry point
+│   ├── config.py                      # Configuration
+│   ├── .env.example
+│   │
+│   ├── api/
+│   │   ├── __init__.py
+│   │   ├── routes/
+│   │   │   ├── __init__.py
+│   │   │   ├── health.py              # Health check endpoint
+│   │   │   ├── dashboard.py           # Dashboard data endpoint
+│   │   │   ├── chat.py                # Chat / LLM endpoint
+│   │   │   ├── analysis.py            # Risk & Lean analysis
+│   │   │   └── streaming.py           # WebSocket streaming
+│   │   └── schemas.py                 # Request/response models
+│   │
+│   ├── core/
+│   │   ├── __init__.py
+│   │   ├── security.py                # Input validation, sanitization
+│   │   ├── logging.py                 # Structured logging
+│   │   └── exceptions.py              # Custom exceptions
+│   │
+│   ├── services/
+│   │   ├── __init__.py
+│   │   ├── data_service.py            # Data access & summary
+│   │   ├── risk_service.py            # Risk evaluation
+│   │   ├── lean_service.py            # Lean waste analysis
+│   │   ├── recommendation_service.py  # Recommendations
+│   │   ├── rag_service.py             # RAG engine
+│   │   ├── llm_service.py             # LLM orchestration
+│   │   └── agent_service.py           # Specialized agents
+│   │
+│   ├── models/
+│   │   ├── __init__.py
+│   │   ├── database.py                # SQLite setup
+│   │   └── schemas.py                 # ORM models
+│   │
+│   ├── data/
+│   │   ├── production.csv
+│   │   ├── equipment.csv
+│   │   ├── maintenance.csv
+│   │   ├── safety_incidents.csv
+│   │   ├── operations.csv
+│   │   └── mining_knowledge.json      # RAG knowledge base
+│   │
+│   ├── agents/
+│   │   ├── __init__.py
+│   │   ├── base_agent.py              # Base agent class
+│   │   ├── risk_agent.py              # Risk analysis agent
+│   │   ├── lean_agent.py              # Lean analysis agent
+│   │   ├── maintenance_agent.py       # Maintenance agent
+│   │   └── recommendation_agent.py    # Recommendation agent
+│   │
+│   ├── tests/
+│   │   ├── __init__.py
+│   │   ├── test_health.py             # Health endpoint tests
+│   │   ├── test_dashboard.py          # Dashboard tests
+│   │   ├── test_services.py           # Service layer tests
+│   │   ├── test_agents.py             # Agent tests
+│   │   └── test_rag.py                # RAG tests
+│   │
+│   └── utils/
+│       ├── __init__.py
+│       ├── csv_loader.py              # CSV data loading
+│       ├── cache.py                   # In-memory caching
+│       └── metrics.py                 # Performance metrics
+│
+├── docs/                               # Documentation
+│   ├── ARCHITECTURE.md                # System design
+│   ├── API.md                         # API specification
+│   ├── RAG.md                         # RAG implementation
+│   ├── AGENTS.md                      # Agent system
+│   ├── DEPLOYMENT.md                  # Deployment guide
+│   └── DEVELOPMENT.md                 # Development workflow
+│
+├── .github/
+│   └── workflows/
+│       ├── test.yml                   # CI tests
+│       └── deploy.yml                 # CD deploy
+│
+└── docker-compose.yml
+```
 
-        availability = float(round(self._safe_numeric_series(equipment, "availability_pct", 90.0), 1))
-        waiting_time = float(round(self._safe_numeric_series(operations[operations["metric"] == "waiting_time"], "value", 31.0), 1))
-        route_deviation = float(round(self._safe_numeric_series(operations[operations["metric"] == "route_deviation"], "value", 12.0), 1))
-        fuel_consumption = float(round(self._safe_numeric_series(operations[operations["metric"] == "fuel_consumption"], "value", 7.1), 1))
+## API Endpoints
 
-        incident_severity_weight = {"low": 1, "medium": 2, "high": 4, "critical": 6}
-        incident_score = 0.0
-        if not incidents.empty:
-            levels = incidents["severity"].astype(str).str.lower()
-            counts = pd.to_numeric(incidents["count"], errors="coerce").fillna(0)
-            weights = levels.map(incident_severity_weight).fillna(1)
-            incident_score = float((counts * weights).sum())
+### Health & Status
+- `GET /health` — Health check
+- `GET /status` — System status
 
-        risk_score = int(min(100, max(0, round(70 + (35 - availability) * 1.3 + waiting_time * 0.5 + incident_score * 1.2))))
-        lean_waste = float(round(max(6.0, waiting_time + route_deviation * 0.7 + fuel_consumption * 0.6), 1))
+### Dashboard Data
+- `GET /api/dashboard/summary` — Operational summary (KPIs)
+- `GET /api/dashboard/risks` — Risk evaluation
+- `GET /api/dashboard/lean` — Lean waste patterns
+- `GET /api/dashboard/recommendations` — Recommended actions
+- `GET /api/dashboard/equipment` — Equipment status
 
-        critical_equipment = maintenance.copy()
-        if not critical_equipment.empty:
-            critical_equipment = critical_equipment.sort_values("downtime_hours", ascending=False)[["equipment", "downtime_hours", "priority"]].head(3).to_dict("records")
-        else:
-            critical_equipment = []
+### Analysis
+- `POST /api/analysis/risk-score` — Calculate risk score
+- `POST /api/analysis/lean-waste` — Detect Lean waste
+- `POST /api/analysis/simulate` — Simulate what-if scenarios
 
-        return {
-            "production": production,
-            "equipment": equipment,
-            "maintenance": maintenance,
-            "incidents": incidents,
-            "operations": operations,
-            "target_tons": target,
-            "actual_tons": actual,
-            "productivity_delta": productivity_delta,
-            "availability": availability,
-            "waiting_time": waiting_time,
-            "route_deviation": route_deviation,
-            "fuel_consumption": fuel_consumption,
-            "risk_score": risk_score,
-            "lean_waste": lean_waste,
-            "critical_equipment": critical_equipment,
-        }
+### Chat / LLM
+- `POST /api/chat/ask` — Ask MineCopilot (request/response)
+- `WS /ws/chat/stream` — Real-time chat streaming
+
+### RAG
+- `POST /api/rag/search` — Search knowledge base
+- `POST /api/rag/ingest` — Ingest documents
+
+## Key Features
+
+### 1. Real-time Dashboards
+- Live KPI metrics (Risk, Productivity, Lean Waste, Availability)
+- Risk heatmaps and trend charts
+- Equipment status at a glance
+- Maintenance backlog tracking
+
+### 2. Conversational Assistant
+- Ask questions in natural language
+- Grounded in operational data via RAG
+- Specialized mining agents for context
+- What-if simulation capabilities
+
+### 3. Intelligent Analysis
+- **Risk Engine**: Detects equipment degradation, safety risks, production anomalies
+- **Lean Engine**: Identifies waste in waiting time, routing, fuel consumption
+- **Recommendation Engine**: Prioritizes actions and simulates impact
+- **LLM Agents**: Specialized reasoning for different mining domains
+
+### 4. RAG (Retrieval-Augmented Generation)
+- Embeds mining knowledge base (equipment specs, maintenance procedures, safety protocols)
+- Retrieves relevant context for LLM prompts
+- Grounds responses in operational data and domain knowledge
+
+### 5. Production Ready
+- Comprehensive error handling
+- Input validation and sanitization
+- Rate limiting and security headers
+- Async/concurrent processing
+- Structured logging
+- Automated tests (unit + integration)
+- Docker orchestration
+- Environment-based configuration
+
+## Environment Setup
+
+```bash
+# Copy template
+cp .env.example .env
+
+# Edit .env
+OPENAI_API_KEY=sk-...
+OPENAI_MODEL=gpt-4o-mini
+DATABASE_URL=sqlite:///./data.db
+RAG_VECTOR_DB=milvus  # or 'faiss' for local
+LOG_LEVEL=INFO
+FRONTEND_URL=http://localhost:3000
+BACKEND_URL=http://localhost:8000
+```
+
+## Testing
+
+```bash
+# Backend tests
+cd backend
+pip install pytest pytest-asyncio
+pytest tests/ -v
+
+# Frontend tests
+cd frontend
+npm test
+
+# Integration tests
+cd backend
+pytest tests/test_integration.py -v
+```
+
+## Deployment
+
+### Docker Compose (local/staging)
+```bash
+docker-compose up -d
+```
+
+### Production (Kubernetes)
+See `docs/DEPLOYMENT.md` for Helm charts and production configuration.
+
+## Performance Optimizations
+
+### Backend
+- Async SQLAlchemy queries
+- Request-level caching
+- Vector DB indexing for RAG
+- Batch processing for data ingestion
+- Connection pooling
+
+### Frontend
+- Server-side rendering (Next.js SSR)
+- Incremental Static Regeneration (ISR)
+- Code splitting and lazy loading
+- WebSocket for real-time updates
+- Optimized images and fonts
+
+## Monitoring & Logging
+
+- Structured JSON logging (Python)
+- Request tracing (FastAPI middleware)
+- Performance metrics (Prometheus-compatible endpoints)
+- Error tracking (built-in, can integrate Sentry)
+
+## Roadmap
+
+- [ ] Multi-tenancy support
+- [ ] Advanced RAG with semantic search
+- [ ] Custom agent training
+- [ ] Mobile app (React Native)
+- [ ] Real-time alerting system
+- [ ] Integration with mining equipment APIs
+- [ ] Advanced analytics & ML models
+
+## Tech Stack
+
+**Frontend:**
+- React 18+
+- Next.js 13+ (App Router)
+- TypeScript
+- Tailwind CSS
+- Shadcn/ui (component library)
+- Zustand (state management)
+- TanStack Query (data fetching)
+- WebSocket (real-time)
+
+**Backend:**
+- Python 3.11+
+- FastAPI
+- Uvicorn (ASGI server)
+- SQLAlchemy (ORM)
+- Pydantic (validation)
+- OpenAI SDK
+- Pandas + NumPy (data processing)
+- Milvus / FAISS (vector DB)
+- Pytest (testing)
+
+**DevOps:**
+- Docker & Docker Compose
+- GitHub Actions (CI/CD)
+- SQLite (development)
+- PostgreSQL (production)
+
+## Team
+
+Hackathon Team — MineCopilot AI 2026
+
+## Disclaimer
+
+This prototype is for demonstration and decision support only. It does not replace qualified mining, safety, or engineering judgment.
+
+## License
+
+MIT
