@@ -1,4 +1,4 @@
-# MineCopilot Enterprise
+# Minelot Enterprise
 
 ## The AI Decision Layer for Mining
 
@@ -10,7 +10,7 @@ A full-stack platform that connects fragmented mining data and uses conversation
 
 Large mining companies use multiple disconnected systems (ERP, SAP, maintenance, production, HSE, IoT, SCADA, fleet management). A supervisor needing to answer "Why did productivity decrease?" must manually cross multiple data sources.
 
-**MineCopilot** solves this by creating an AI decision layer that automatically:
+**Minelot** solves this by creating an AI decision layer that automatically:
 - Connects the data
 - Retrieves relevant evidence
 - Reasons through analytical engines
@@ -125,7 +125,7 @@ The system follows a structured workflow:
 ## Project Structure
 
 ```
-factored-hackathon-2026-minecopilot/
+factored-hackathon-2026-minelot/
 ├── backend/                       # FastAPI application
 │   ├── app/
 │   │   ├── main.py               # Entry point
@@ -269,7 +269,7 @@ npm test
 
 **User asks:** "Why did productivity decrease?"
 
-**MineCopilot responds:**
+**Minelot responds:**
 - Identifies waiting time increase (+31%)
 - Equipment availability decrease (-7%)
 - Route deviation increase (+12%)
@@ -277,14 +277,14 @@ npm test
 
 **User asks:** "What should we do?"
 
-**MineCopilot recommends:**
+**Minelot recommends:**
 - Prioritize T-24 maintenance
 - Reduce F2 waiting time
 - Optimize haul routes
 
 **User asks:** "What happens if we reduce waiting time by 15%?"
 
-**MineCopilot simulates:**
+**Minelot simulates:**
 - Productivity: +4.9%
 - Fuel consumption: -6.7%
 - Downtime risk: -12%
@@ -319,19 +319,11 @@ This prototype is for demonstration and decision support only. It does not repla
 
 ## Team
 
-Hackathon Team — MineCopilot Enterprise 2026
+Hackathon Team — Minelot Enterprise 2026
 
 **Roles:**
-- Principal AI Engineer
-- LLM/RAG Engineer
-- Data Engineer
-- ML Engineer
-- Full-Stack Engineer
-- Mining Operations Specialist
-- Lean Six Sigma Specialist
-- UX/UI Designer
-- Cloud Architect
-
+Benjamin Ghinno IA + ML + DATA engineer
+Valeria Villacorta Machine Learning + Logistic + Mine
 ---
 
 ## License
