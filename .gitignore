@@ -1,0 +1,69 @@
+# MineCopilot AI
+
+> Conversational Mining Intelligence powered by LLMs.
+
+## Problem
+
+Mining operations generate massive amounts of operational data, but critical information remains fragmented across production, maintenance, safety, and dispatch systems.
+
+## Solution
+
+MineCopilot is an AI-powered decision-support assistant that connects mining data and operational knowledge to identify risks, explain root causes, detect Lean waste, and recommend next actions.
+
+## Key capabilities
+
+- Conversational operational analysis
+- Risk detection
+- Root-cause analysis
+- Lean waste identification
+- Maintenance intelligence
+- What-if simulation
+- Recommendation engine
+
+## Architecture
+
+Mining Data
+↓
+Lean Data Layer
+↓
+RAG / Knowledge Base
+↓
+LLM Orchestrator
+↓
+Specialized Agents
+↓
+Simulation
+↓
+Recommendation
+
+## Tech Stack
+
+- Python
+- Streamlit
+- Pandas
+- Numpy
+- OpenAI API (optional)
+- Docker-friendly project layout
+
+## Demo
+
+Run locally:
+
+```bash
+pip install -r requirements.txt
+streamlit run app.py
+```
+
+Open the local URL displayed in the terminal.
+
+## Team
+
+Hackathon Team — MineCopilot AI
+
+## Security & usage note
+
+This prototype is designed for demonstration and support of operational decisions only. It does not replace qualified mining, safety, or engineering judgment. The app sanitizes chat input and keeps the model integration optional and safe by default.
+
+## Disclaimer
+
+This prototype is intended for demonstration and decision support. It does not replace qualified mining, safety, or engineering personnel.
