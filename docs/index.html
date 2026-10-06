@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MineCopilot Enterprise | AI Decision Layer for Mining</title>
+  <style>
+    :root{
+      --bg:#06121d;
+      --bg2:#0f172a;
+      --panel:#101b2b;
+      --panel2:#0b1220;
+      --primary:#22d3ee;
+      --primary2:#3b82f6;
+      --text:#e5eefb;
+      --muted:#9bb0c8;
+      --line:rgba(148,163,184,.18);
+      --success:#34d399;
+      --warning:#fbbf24;
+      --danger:#f87171;
+      --shadow:rgba(0,0,0,.35);
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:Inter,Segoe UI,Roboto,Arial,sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(34,211,238,.12), transparent 28%),
+        radial-gradient(circle at top right, rgba(59,130,246,.14), transparent 24%),
+        linear-gradient(135deg, var(--bg) 0%, var(--bg2) 100%);
+      line-height:1.6;
+    }
+
+    a{color:inherit;text-decoration:none}
+    img{max-width:100%;display:block}
+
+    .container{
+      width:min(1180px, calc(100% - 32px));
+      margin:0 auto;
+    }
+
+    header{
+      position:sticky;
+      top:0;
+      z-index:50;
+      backdrop-filter: blur(10px);
+      background:rgba(6,18,29,.7);
+      border-bottom:1px solid var(--line);
+    }
+
+    .nav{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      min-height:76px;
+      gap:20px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      font-weight:800;
+      letter-spacing:.03em;
+    }
+
+    .brand-mark{
+      width:42px;height:42px;border-radius:12px;
+      display:grid;place-items:center;
+      font-size:22px;
+      background:linear-gradient(135deg,var(--primary),var(--primary2));
+      color:#03111d;
+      box-shadow:0 10px 24px rgba(59,130,246,.42);
+    }
+
+    .nav-links{
+      display:flex;
+      align-items:center;
+      gap:22px;
+      color:var(--muted);
+      font-size:.96rem;
+    }
+    .nav-links a:hover{color:var(--text)}
+
+    .nav-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:12px 18px;
+      border-radius:12px;
+      font-weight:800;
+      background:linear-gradient(135deg,var(--primary),var(--primary2));
+      color:#02131e;
+      box-shadow:0 16px 24px rgba(34,211,238,.22);
+    }
+
+    .hero{
+      padding:68px 0 38px;
+    }
+
+    .hero-grid{
+      display:grid;
+      grid-template-columns:1.3fr .9fr;
+      gap:38px;
+      align-items:center;
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 14px;
+      border-radius:999px;
+      border:1px solid rgba(34,211,238,.22);
+      background:rgba(34,211,238,.06);
+      color:var(--primary);
+      font-size:.78rem;
+      font-weight:800;
+      letter-spacing:.1em;
+      text-transform:uppercase;
+    }
+
+    h1{
+      margin:18px 0 16px;
+      font-size:clamp(2.7rem, 5vw, 5rem);
+      line-height:1.04;
+      letter-spacing:-.06em;
+    }
+
+    .gradient{
+      background:linear-gradient(135deg,#7dd3fc,#22d3ee,#3b82f6);
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+    }
+
+    .lead{
+      max-width:650px;
+      margin:0 0 28px;
+      color:var(--muted);
+      font-size:1.08rem;
+      line-height:1.8;
+    }
+
+    .cta-row{
+      display:flex;
+      gap:16px;
+      flex-wrap:wrap;
+      margin-bottom:28px;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:52px;
+      padding:0 24px;
+      border-radius:14px;
+      font-weight:800;
+      border:1px solid transparent;
+      transition:transform .2s ease, box-shadow .2s ease;
+      cursor:pointer;
+    }
+
+    .btn:hover{transform:translateY(-2px)}
+
+    .btn-primary{
+      background:linear-gradient(135deg,var(--primary),var(--primary2));
+      color:#02131e;
+      box-shadow:0 18px 32px rgba(34,211,238,.25);
+    }
+
+    .btn-secondary{
+      border-color:var(--line);
+      color:var(--text);
+      background:rgba(15,23,42,.36);
+    }
+
+    .stats{
+      display:flex;
+      flex-wrap:wrap;
+      gap:14px;
+    }
+
+    .stat{
+      min-width:140px;
+      padding:16px 18px;
+      border-radius:14px;
+      background:rgba(15,23,42,.5);
+      border:1px solid var(--line);
+    }
+
+    .stat strong{
+      display:block;
+      font-size:1.4rem;
+      color:var(--text);
+    }
+    .stat span{
+      color:var(--muted);
+      font-size:.9rem;
+    }
+
+    .panel{
+      background:linear-gradient(180deg, rgba(15,23,42,.9), rgba(9,16,28,.96));
+      border:1px solid var(--line);
+      border-radius:24px;
+      padding:22px;
+      box-shadow:0 28px 70px rgba(2,6,23,.6);
+    }
+
+    .panel-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      color:var(--muted);
+      margin-bottom:16px;
+      font-size:.9rem;
+    }
+
+    .dots{
+      display:flex;
+      gap:8px;
+    }
+
+    .dot{
+      width:10px;height:10px;border-radius:50%;
+      display:block;
+    }
+    .dot.red{background:var(--danger)}
+    .dot.yellow{background:var(--warning)}
+    .dot.green{background:var(--success)}
+
+    .screen{
+      border:1px solid var(--line);
+      border-radius:18px;
+      background:linear-gradient(180deg, rgba(34,211,238,.08), rgba(15,23,42,.22));
+      padding:18px;
+    }
+
+    .kpi{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      padding:14px 0;
+      border-bottom:1px solid var(--line);
+    }
+    .kpi:last-child{border-bottom:none}
+    .kpi-label{color:var(--muted);font-size:.92rem}
+    .kpi-value{
+      font-weight:800;
+      font-size:1.08rem;
+      color:var(--text);
+    }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:999px;
+      padding:8px 10px;
+      background:rgba(52,211,153,.08);
+      border:1px solid rgba(52,211,153,.35);
+      color:var(--success);
+      font-weight:700;
+      font-size:.74rem;
+    }
+
+    section{
+      padding:64px 0;
+    }
+
+    .section-title{
+      margin:0 0 30px;
+      text-align:center;
+      font-size:clamp(2rem,4vw,3rem);
+      letter-spacing:-.05em;
+    }
+
+    .features-grid{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:20px;
+      margin-top:20px;
+    }
+
+    .feature{
+      background:rgba(15,23,42,.68);
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:24px;
+      box-shadow:0 16px 28px rgba(2,6,23,.24);
+      transition:transform .3s ease, border-color .3s ease;
+    }
+
+    .feature:hover{
+      transform:translateY(-4px);
+      border-color:rgba(34,211,238,.4);
+    }
+
+    .feature-icon{
+      width:52px;height:52px;border-radius:14px;
+      display:grid;place-items:center;
+      background:linear-gradient(135deg, rgba(34,211,238,.18), rgba(59,130,246,.18));
+      font-size:26px;
+      margin-bottom:16px;
+    }
+
+    .feature h3{
+      margin:0 0 10px;
+      font-size:1.24rem;
+    }
+
+    .feature p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.75;
+    }
+
+    .workflow{
+      display:grid;
+      grid-template-columns:repeat(5,minmax(0,1fr));
+      gap:18px;
+      margin-top:28px;
+    }
+
+    .step{
+      background:rgba(15,23,42,.68);
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:20px 18px;
+      text-align:center;
+      transition:transform .3s ease;
+    }
+
+    .step:hover{
+      transform:translateY(-2px);
+    }
+
+    .step-number{
+      width:46px;height:46px;
+      display:grid;place-items:center;
+      margin:0 auto 16px;
+      border-radius:50%;
+      background:linear-gradient(135deg,var(--primary),var(--primary2));
+      color:#02131e;
+      font-weight:900;
+    }
+
+    .step h4{
+      margin:0 0 8px;
+      font-size:1rem;
+      letter-spacing:.08em;
+    }
+
+    .step p{
+      margin:0;
+      color:var(--muted);
+      font-size:.9rem;
+      line-height:1.65;
+    }
+
+    .benefits{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:20px;
+      margin-top:18px;
+    }
+
+    .benefit{
+      padding:22px;
+      border-radius:18px;
+      background:rgba(15,23,42,.68);
+      border:1px solid var(--line);
+      transition:transform .3s ease, border-color .3s ease;
+    }
+
+    .benefit:hover{
+      transform:translateY(-4px);
+      border-color:rgba(34,211,238,.4);
+    }
+
+    .benefit h3{
+      margin:0 0 12px;
+      font-size:1.18rem;
+    }
+
+    .benefit p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.7;
+    }
+
+    .cta{
+      padding:72px 0 92px;
+    }
+
+    .cta-box{
+      padding:42px 24px;
+      border-radius:26px;
+      text-align:center;
+      border:1px solid rgba(34,211,238,.2);
+      background:linear-gradient(135deg, rgba(34,211,238,.12), rgba(59,130,246,.12));
+      box-shadow:0 24px 60px rgba(2,6,23,.35);
+    }
+
+    .cta-box h2{
+      margin:0 0 18px;
+      font-size:clamp(2rem,4vw,3rem);
+      letter-spacing:-.05em;
+    }
+    .cta-box p{
+      max-width:700px;
+      margin:0 auto 22px;
+      color:var(--muted);
+      line-height:1.8;
+      font-size:1.05rem;
+    }
+
+    footer{
+      border-top:1px solid var(--line);
+      padding:28px 0 46px;
+      color:var(--muted);
+    }
+
+    .footer-row{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:16px;
+      flex-wrap:wrap;
+    }
+
+    @media (max-width:980px){
+      .hero-grid, .features-grid, .benefits{grid-template-columns:1fr 1fr}
+      .workflow{grid-template-columns:repeat(3,1fr)}
+    }
+
+    @media (max-width:720px){
+      .nav-links{display:none}
+      .hero-grid, .features-grid, .benefits, .workflow{grid-template-columns:1fr}
+      .cta-row{flex-direction:column}
+      .btn{width:100%}
+      .footer-row{flex-direction:column;align-items:flex-start}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <div class="brand-mark">⛏️</div>
+        <span>MineCopilot</span>
+      </div>
+
+      <nav class="nav-links">
+        <a href="#features">Funciones</a>
+        <a href="#workflow">Cómo funciona</a>
+        <a href="#benefits">Beneficios</a>
+      </nav>
+
+      <a class="nav-btn" href="#cta">Launch Beta</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <div class="eyebrow">AI decision layer for mining</div>
+          <h1>
+            Conecta datos mineros fragmentados y
+            <span class="gradient">decide mejor</span>
+          </h1>
+          <p class="lead">
+            MineCopilot conecta ERP, mantenimiento, producción, seguridad e IoT para explicar riesgos,
+            detectar desperdicios Lean, simular escenarios y recomendar acciones con impacto real sobre la operación.
+          </p>
+
+          <div class="cta-row">
+            <a class="btn btn-primary" href="#cta">🚀 Abrir beta</a>
+            <a class="btn btn-secondary" href="#features">Ver más</a>
+          </div>
+
+          <div class="stats">
+            <div class="stat">
+              <strong>+30%</strong>
+              <span>mejora de visibilidad</span>
+            </div>
+            <div class="stat">
+              <strong>9</strong>
+              <span>tipos de waste</span>
+            </div>
+            <div class="stat">
+              <strong>24/7</strong>
+              <span>soporte operativo</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <span>MineCopilot Dashboard</span>
+            <div class="dots">
+              <span class="dot red"></span>
+              <span class="dot yellow"></span>
+              <span class="dot green"></span>
+            </div>
+          </div>
+
+          <div class="screen">
+            <div class="kpi">
+              <span class="kpi-label">Risk score</span>
+              <span class="kpi-value">82/100</span>
+            </div>
+            <div class="kpi">
+              <span class="kpi-label">Productivity delta</span>
+              <span class="kpi-value">-8.4%</span>
+            </div>
+            <div class="kpi">
+              <span class="kpi-label">Lean waste</span>
+              <span class="kpi-value">31.7</span>
+            </div>
+            <div class="kpi">
+              <span class="kpi-label">Recommended action</span>
+              <span class="pill">Prioritize T-24</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="features">
+      <div class="container">
+        <h2 class="section-title">Qué hace MineCopilot</h2>
+
+        <div class="features-grid">
+          <article class="feature">
+            <div class="feature-icon">🚨</div>
+            <h3>Detección de riesgo</h3>
+            <p>Identifica riesgos críticos antes de que escalen, con análisis y priorización basada en evidencia operacional.</p>
+          </article>
+
+          <article class="feature">
+            <div class="feature-icon">⚙️</div>
+            <h3>Lean waste analysis</h3>
+            <p>Detecta tiempos muertos, rutas ineficientes, sobreprocesamiento y desperdicios operativos.</p>
+          </article>
+
+          <article class="feature">
+            <div class="feature-icon">🧠</div>
+            <h3>IA conversacional</h3>
+            <p>Pregunta en lenguaje natural y recibe explicaciones con evidencia, análisis y recomendación priorizada.</p>
+          </article>
+
+          <article class="feature">
+            <div class="feature-icon">📊</div>
+            <h3>Simulación de escenarios</h3>
+            <p>Modela cambios operativos y predice impacto en productividad, costos y riesgo.</p>
+          </article>
+
+          <article class="feature">
+            <div class="feature-icon">🧩</div>
+            <h3>Integración</h3>
+            <p>Conecta ERP, mantenimiento, producción, seguridad, IoT y flotas en una sola capa inteligente.</p>
+          </article>
+
+          <article class="feature">
+            <div class="feature-icon">💡</div>
+            <h3>Acciones accionables</h3>
+            <p>Entrega recomendaciones con prioridad por impacto, costo y sencillez de implementación.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="workflow">
+      <div class="container">
+        <h2 class="section-title">Cómo funciona</h2>
+
+        <div class="workflow">
+          <div class="step">
+            <div class="step-number">1</div>
+            <h4>PREGUNTA</h4>
+            <p>El usuario consulta en lenguaje natural.</p>
+          </div>
+
+          <div class="step">
+            <div class="step-number">2</div>
+            <h4>RECUPERA</h4>
+            <p>Trae datos y evidencia de múltiples sistemas.</p>
+          </div>
+
+          <div class="step">
+            <div class="step-number">3</div>
+            <h4>RAZONA</h4>
+            <p>Los motores analíticos procesan riesgo, producción y Lean.</p>
+          </div>
+
+          <div class="step">
+            <div class="step-number">4</div>
+            <h4>SIMULA</h4>
+            <p>Prueba escenarios y predice impactos operativos.</p>
+          </div>
+
+          <div class="step">
+            <div class="step-number">5</div>
+            <h4>RECOMIENDA</h4>
+            <p>Prioriza acciones con valor para la operación.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="benefits">
+      <div class="container">
+        <h2 class="section-title">Ventajas para la operación</h2>
+
+        <div class="benefits">
+          <div class="benefit">
+            <h3>⏱️ Decisiones más rápidas</h3>
+            <p>Reduce el tiempo para explicar por qué bajó productividad o aumentó riesgo.</p>
+          </div>
+
+          <div class="benefit">
+            <h3>📈 Inteligencia basada en evidencia</h3>
+            <p>Todo se fundamenta en datos reales, no en suposiciones ni reportes aislados.</p>
+          </div>
+
+          <div class="benefit">
+            <h3>💰 ROI visible</h3>
+            <p>La recomendación muestra impacto esperado y valor operativo.</p>
+          </div>
+
+          <div class="benefit">
+            <h3>🛡️ Control operativo</h3>
+            <p>Mejora la supervisión, anticipación y respuesta ante eventos críticos.</p>
+          </div>
+
+          <div class="benefit">
+            <h3>🔗 Sistema integrado</h3>
+            <p>Unifica la información dispersa en una verdad operacional única para la toma de decisiones.</p>
+          </div>
+
+          <div class="benefit">
+            <h3>🚀 Preparado para beta</h3>
+            <p>Diseñado para demostración interna, pruebas con usuarios y validación de valor.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta" id="cta">
+      <div class="container">
+        <div class="cta-box">
+          <h2>¿Listo para probar la beta?</h2>
+          <p>
+            Este proyecto demuestra cómo una capa de IA puede transformar decisiones mineras,
+            mejorar seguridad y elevar productividad con respaldo analítico.
+          </p>
+          <a class="btn btn-primary" href="https://github.com/vale34villa1/factored-hackathon-2026-minelot" target="_blank">
+            🚀 Ver repositorio
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-row">
+      <span>MineCopilot Enterprise • Factored Hackathon 2026</span>
+      <span>Conversational Mining Intelligence powered by LLMs</span>
+    </div>
+  </footer>
+</body>
+</html>
